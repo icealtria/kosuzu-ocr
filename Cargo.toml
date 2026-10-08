@@ -1,0 +1,27 @@
+[package]
+name = "kosuzu-ocr"
+version = "0.1.0"
+edition = "2021"
+description = "PP-OCRv6 recognition engine (det DB + rec CTC)"
+
+# Allowlist, not blacklist: a stray file added later cannot leak into the
+# published crate. The private fixture bundle (screenshot + goldens + models)
+# is therefore excluded by construction.
+include = [
+    "/src",
+    "/tests",
+    "/scripts",
+    "/fixtures/charset.txt",
+    "/fixtures/charset18k.txt",
+    "/README.md",
+]
+
+[dependencies]
+ort = { version = "=2.0.0-rc.13", default-features = false, features = ["load-dynamic"] }
+image = { version = "0.25", default-features = false, features = ["png", "jpeg"] }
+imageproc = { version = "0.25", default-features = false }
+anyhow = "1"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "blocking"] }
+clap = { version = "4", default-features = false, features = ["std", "help", "usage", "error-context", "derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

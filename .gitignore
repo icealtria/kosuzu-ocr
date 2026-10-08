@@ -1,0 +1,16 @@
+/target
+.venv/
+__pycache__/
+
+# Private OCR test fixtures.
+# Everything below is derived from a confidential screenshot and must never be
+# published. Only fixtures/charset*.txt (public model vocabularies, required by
+# include_str! in lib.rs) are tracked.
+fixtures/*.bin
+fixtures/*.json
+fixtures/*.onnx
+fixtures/shot.png
+
+# Non-test strays.
+photo_*.jpg
+repomix-output.xml
