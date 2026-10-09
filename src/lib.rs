@@ -65,17 +65,11 @@ pub(crate) fn to_bgr(image: &RgbImage) -> Img {
 }
 
 pub fn models_dir() -> std::path::PathBuf {
-    if let Some(dir) = std::env::var_os("KOSUZU_MODELS") {
+    if let Some(dir) = std::env::var_os("KOSUZU_MODELS").filter(|p| !p.is_empty()) {
         return dir.into();
     }
-    let data = std::env::var_os("XDG_DATA_HOME")
-        .filter(|p| !p.is_empty())
-        .map(std::path::PathBuf::from)
-        .unwrap_or_else(|| {
-            std::path::PathBuf::from(std::env::var_os("HOME").unwrap_or_default())
-                .join(".local/share")
-        });
-    data.join("kosuzu").join("models")
+    let base = dirs::data_local_dir().unwrap_or_else(|| std::path::PathBuf::from("."));
+    base.join("kosuzu").join("models")
 }
 
 impl OcrEngine {

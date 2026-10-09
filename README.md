@@ -14,8 +14,13 @@ for l in &lines {
 
 Presets: `tiny` (6904-char dict) / `small` / `medium` (shared 18708-char dict).
 A missing preset is downloaded on demand from HuggingFace by `ensure_preset()`.
-`models_dir()` honors `KOSUZU_MODELS`, otherwise
-`$XDG_DATA_HOME/kosuzu/models`.
+`models_dir()` honors `KOSUZU_MODELS` if set, otherwise the per-platform
+data dir (`dirs::data_local_dir`): `%LOCALAPPDATA%\kosuzu\models` on
+Windows, `~/Library/Application Support/kosuzu/models` on macOS,
+`$XDG_DATA_HOME/kosuzu/models` (i.e. `~/.local/share/kosuzu/models`) on
+Linux. On Windows/macOS the engine additionally needs the ONNX Runtime
+dylib: `onnxruntime.dll` / `libonnxruntime.dylib` next to the executable
+or in the library path, or `ORT_DYLIB_PATH` pointing at it.
 
 ## Parity gate
 
