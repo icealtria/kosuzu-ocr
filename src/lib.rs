@@ -83,12 +83,17 @@ impl OcrEngine {
         ensure_ort();
         let det_path = models::det_path(dir, preset);
         let rec_path = models::rec_path(dir, preset);
+        let threads = std::thread::available_parallelism().map(|n| n.get()).unwrap_or(1).min(8);
         let det = Session::builder()
             .context("ort session builder")?
+            .with_intra_threads(threads)
+            .map_err(|e| anyhow::anyhow!("{e}"))?
             .commit_from_file(&det_path)
             .with_context(|| format!("load {}", det_path.display()))?;
         let rec = Session::builder()
             .context("ort session builder")?
+            .with_intra_threads(threads)
+            .map_err(|e| anyhow::anyhow!("{e}"))?
             .commit_from_file(&rec_path)
             .with_context(|| format!("load {}", rec_path.display()))?;
         let raw = match preset {
